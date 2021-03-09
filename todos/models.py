@@ -1,9 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 
 class Todo(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey('auth.User', related_name='todos', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     body = models.CharField(max_length=250)
     done = models.BooleanField(default=False)
