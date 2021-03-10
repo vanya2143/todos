@@ -10,10 +10,10 @@ class TodoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Todo
-        fields = ['id', 'owner', 'title', 'body', 'done', 'created']
+        fields = ['id', 'title', 'body', 'done', 'owner', 'url', 'created']
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     todos = serializers.HyperlinkedRelatedField(
         many=True,
         view_name='todo-detail',
