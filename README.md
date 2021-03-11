@@ -132,6 +132,10 @@ curl --request DELETE \
   --header "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE1NDg3MjAyLCJqdGkiOiI4Yzk0MDhhNzZjNDU0MzM5ODYyNWQyZjc2YTYxNzdiYiIsInVzZXJfaWQiOjR9.BtIimdMKnDWN7DkeBtCfXbLqJwoDnpO_VeGlLOaRFHA" \
   http://localhost:8000/api/todos/2
 ```
+Response:
+```log
+HTTP/1.1 204 No Content
+```
 ### List users
 ```shell
 
