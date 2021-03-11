@@ -36,7 +36,7 @@ Response:
 
 ### Get jwt token
 ```shell
-curl --request POST \ 
+curl --request POST \
   --header "Content-Type: application/json" \
   --data '{"username":"user","password":"secret_password"}' \
   http://localhost:8000/api/auth/token/
@@ -47,6 +47,10 @@ Response:
     "refresh":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxNTU3MTgwMiwianRpIjoiMzhjODE0Njc1MWEyNDI2OGE1NGI0ZDI1OTJlNTdiM2QiLCJ1c2VyX2lkIjo0fQ.YqHPS57ez1RZkADAqo3VZTWe3ubU9ooGVtUukqlePPI",
     "access":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE1NDg3MjAyLCJqdGkiOiI4Yzk0MDhhNzZjNDU0MzM5ODYyNWQyZjc2YTYxNzdiYiIsInVzZXJfaWQiOjR9.BtIimdMKnDWN7DkeBtCfXbLqJwoDnpO_VeGlLOaRFHA"
 }
+```
+We store the access token in a variable for a shorter string length
+```shell
+TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE1NDg3MjAyLCJqdGkiOiI4Yzk0MDhhNzZjNDU0MzM5ODYyNWQyZjc2YTYxNzdiYiIsInVzZXJfaWQiOjR9.BtIimdMKnDWN7DkeBtCfXbLqJwoDnpO_VeGlLOaRFHA"
 ```
 
 ### Create todo
@@ -64,7 +68,7 @@ We used an access token from [get-jwt-token](https://github.com/vanya2143/todos#
 ```shell
 curl --request POST \
   --header "Content-Type: application/json" \
-  --header "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE1NDg3MjAyLCJqdGkiOiI4Yzk0MDhhNzZjNDU0MzM5ODYyNWQyZjc2YTYxNzdiYiIsInVzZXJfaWQiOjR9.BtIimdMKnDWN7DkeBtCfXbLqJwoDnpO_VeGlLOaRFHA" \
+  --header "Authorization: Bearer ${TOKEN}" \
   --data '{"title":"My First Todo","body":"Todo body"}' \
   http://localhost:8000/api/todos/
 ```
@@ -85,7 +89,7 @@ Response:
 ```shell
 curl --request GET \
   --header "Content-Type: application/json" \
-  --header "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE1NDg3MjAyLCJqdGkiOiI4Yzk0MDhhNzZjNDU0MzM5ODYyNWQyZjc2YTYxNzdiYiIsInVzZXJfaWQiOjR9.BtIimdMKnDWN7DkeBtCfXbLqJwoDnpO_VeGlLOaRFHA" \
+  --header "Authorization: Bearer ${TOKEN}" \
   http://localhost:8000/api/todos/
 ```
 Reaponse:
@@ -98,7 +102,8 @@ Reaponse:
     "done":false,
     "owner":"user",
     "url":"http://localhost:8000/api/todos/2",
-    "created":"2021-03-11T18:01:32.599423Z"}
+    "created":"2021-03-11T18:01:32.599423Z"
+  }
 ]
 ```
 ### Update todo
@@ -108,7 +113,7 @@ The url has a task id `http://localhost:8000/api/todos/` + `id`
 ```shell
 curl --request PUT \
   --header "Content-Type: application/json" \
-  --header "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE1NDg3MjAyLCJqdGkiOiI4Yzk0MDhhNzZjNDU0MzM5ODYyNWQyZjc2YTYxNzdiYiIsInVzZXJfaWQiOjR9.BtIimdMKnDWN7DkeBtCfXbLqJwoDnpO_VeGlLOaRFHA" \
+  --header "Authorization: Bearer ${TOKEN}" \
   --data '{"title":"My First Todo","body":"Todo body", "done": "true"}' \
   http://localhost:8000/api/todos/2 # 2 it's task id
 ```
@@ -129,7 +134,7 @@ So, we see that the "done" field has changed.
 ```shell
 curl --request DELETE \
   --header "Content-Type: application/json" \
-  --header "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE1NDg3MjAyLCJqdGkiOiI4Yzk0MDhhNzZjNDU0MzM5ODYyNWQyZjc2YTYxNzdiYiIsInVzZXJfaWQiOjR9.BtIimdMKnDWN7DkeBtCfXbLqJwoDnpO_VeGlLOaRFHA" \
+  --header "Authorization: Bearer ${TOKEN}" \
   http://localhost:8000/api/todos/2
 ```
 Response:
@@ -137,8 +142,37 @@ Response:
 HTTP/1.1 204 No Content
 ```
 ### List users
+We can list all users with their tasks. We need administrator rights for this request.
 ```shell
-
+curl --request GET \
+  --header "Content-Type: application/json" \
+  --header "Authorization: Bearer ${TOKEN}" \
+  http://localhost:8000/api/users/
 ```
-
+Response:
+```json
+{
+  "count":3,
+  "next":null,
+  "previous":null,
+  "results":
+  [
+    {
+      "id":1,
+      "username":"admin",
+      "url":"http://localhost:8000/api/users/1",
+      "todos": []
+    }, 
+    {
+      "id":4,
+      "username":"user",
+      "url":"http://localhost:8000/api/users/4",
+      "todos":
+      [
+        "http://localhost:8000/api/todos/4"
+      ]
+    }
+  ]
+}
+```
 ## Project structure
