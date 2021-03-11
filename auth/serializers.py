@@ -6,17 +6,10 @@ from rest_framework import serializers
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    password2 = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ['username', 'password', 'password2']
-
-    def validate(self, attrs):
-        if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError({"Password": "Password fields didn't match."})
-
-        return attrs
+        fields = ['username', 'password']
 
     def create(self, validated_data):
         user = User.objects.create(
