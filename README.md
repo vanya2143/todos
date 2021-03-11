@@ -20,7 +20,7 @@ python manage.py runserver
 ```
 
 ## Usage
-In code examples usage curl utility
+Use [curl](https://en.wikipedia.org/wiki/CURL) utility in code examples
 
 ### Registration user
 ```shell
