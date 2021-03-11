@@ -24,9 +24,10 @@ In code examples usage curl utility
 
 ### Registration user
 ```shell
-curl -X POST --location "http://localhost:8000/api/auth/register/"  \
-  -H "Accept: application/json"  \
-  -d "{\"username\":\"user2\", \"password\":\"vanya2143\", \"password2\":\"vanya2143\"}"
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"username":"user","password":"secret_password", "password2":"secret_password"}' \
+  http://localhost:8000/api/auth/register/
 ```
 
 ### Create todo
