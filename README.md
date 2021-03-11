@@ -24,7 +24,7 @@ In code examples usage curl utility
 
 ### Registration user
 ```shell
-curl -X POST --location "http://localhost:8000/api/auth/register/" 
+curl -X POST --location "http://localhost:8000/api/auth/register/" \
   -H "Accept: application/json"  
   -d "{\"username\":\"user2\", \"password\":\"vanya2143\", \"password2\":\"vanya2143\"}"
 ```
