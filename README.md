@@ -1,5 +1,6 @@
 # todos
-This is to do list app written in Django Rest Framework
+This is a to-do list app. 
+This application uses: django rest framework to create api and jwt to create token authentication system.
 
 
 ## Run
