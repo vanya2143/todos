@@ -176,4 +176,3 @@ Response:
   ]
 }
 ```
-## Project structure
