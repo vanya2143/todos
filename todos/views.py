@@ -1,10 +1,9 @@
 from django.contrib.auth.models import User
 
-from rest_framework.views import APIView
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework import permissions
+from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.routers import reverse
 
 from .models import Todo
@@ -20,35 +19,20 @@ class ApiRoot(APIView):
         })
 
 
-class TodoList(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        todos = Todo.objects.all().filter(owner=request.user)
-        serializer = TodoSerializer(todos, many=True, context={'request': request})
-        return Response(serializer.data)
-
-    def post(self, request):
-        serializer = TodoSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save(owner=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class TodoDetail(generics.RetrieveUpdateDestroyAPIView):
+class TodoViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated & IsOwnerOrAdmin]
-    queryset = Todo.objects.all()
     serializer_class = TodoSerializer
+    queryset = Todo.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+    def filter_queryset(self, queryset):
+        queryset = super(TodoViewSet, self).filter_queryset(queryset)
+        return queryset.filter(owner=self.request.user)
 
 
-class UserList(generics.ListAPIView):
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = UserSerializer
     permission_classes = (permissions.IsAdminUser,)
     queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveAPIView):
-    permission_classes = (permissions.IsAdminUser,)
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
