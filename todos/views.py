@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import permissions
 from rest_framework import viewsets
-from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.routers import reverse
 
@@ -11,12 +11,13 @@ from .serializers import TodoSerializer, UserSerializer
 from .permissions import IsOwnerOrAdmin
 
 
-class ApiRoot(APIView):
-    def get(self, request):
-        return Response({
-            'users': reverse('user-list', request=request),
-            'todos': reverse('todo-list', request=request)
-        })
+@api_view(['GET'])
+def api_root(request):
+    return Response({
+        'auth': reverse('api-auth-root', request=request),
+        'users': reverse('user-list', request=request),
+        'todos': reverse('todo-list', request=request)
+    })
 
 
 class TodoViewSet(viewsets.ModelViewSet):
